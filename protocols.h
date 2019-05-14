@@ -6,7 +6,7 @@
 #include <Wire_slave.h>
 #include "libmaple/usart.h"
 #include "motor.h"
-
+#include "util.h"
 #define END_OF_SIG 'y'
 
 

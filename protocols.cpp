@@ -19,25 +19,25 @@ uint8_t FlagReg;
  * ----------------------------------
  * buffer[0] |     WSADEQ
  * buffer[1] |     speed  
- * buffer[2] |     stepper_step_num
- * buffer[3] |
+ * buffer[2] |     flagReg
+ * buffer[3] |     stepper_step_num
  * buffer[4] |
  * buffer[5] |
  * buffer[6] |
- * buffer[7] |     flagReg
+ * buffer[7] |     
  * ----------------------------------
  * * * * def for FlagReg * * * *
  * 
  * bit    |         flag
  * ----------------------------------
- * bit 0  | 
- * bit 1  | read from IMU
- * bit 2  | read battery 
- * bit 3  | stepper_ready
- * bit 4  | stepper_dir
- * bit 5  | 
- * bit 6  | 
- * bit 7  | 
+ * bit 0  |                      1
+ * bit 1  | read from IMU        2
+ * bit 2  | read battery         4
+ * bit 3  | stepper_ready        8
+ * bit 4  | stepper_dir          16
+ * bit 5  |                      32
+ * bit 6  |                      64
+ * bit 7  |                      128
  */
 Motor motor;
 StepMotor myStepper(PB15,PB14);
@@ -53,11 +53,11 @@ uint8_t GetFlags() {return FlagReg;}
 
 void cmdHandler()
 {
-  Speed = CommandBuffer[1];
   int cmd = CommandBuffer[0];
-  int stepNum = CommandBuffer[2];
-  int flags = CommandBuffer[7];
-
+  Speed = CommandBuffer[1];
+  int flags = CommandBuffer[2];
+  int stepNum = CommandBuffer[3];
+  
   /* DC motor commands */
   if(cmd == 'w')        {motor.Go(Speed,Speed);}
   else if(cmd == 'a')   {motor.Go(Speed,Speed*-1);}
@@ -67,6 +67,7 @@ void cmdHandler()
   
   /* stepper commands */
   if((flags>>3)&0x01)   {myStepper.Go((flags>>4)&0x01,stepNum);}
+  if((flags>>2)&0x01)   {readBattery();}
 }
 
 

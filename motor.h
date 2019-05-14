@@ -3,10 +3,10 @@
 
 #include"Arduino.h" 
 
-#define MRF PA7
-#define MRB PA6
-#define MLF PB1
-#define MLB PB0
+#define MLF PA7
+#define MLB PA6
+#define MRF PB0
+#define MRB PB1
 #define FULLSPEED 255
 
 enum {LEFT=1,RIGHT=0};

@@ -36,9 +36,21 @@ void tickHandler()
   CheckUSART();
 }
 
+int readBattery()
+{
+  int Batt = analogRead(batteryPin);
+  uint8_t Battery = int(256*float(Batt)/float(0xfff));
+  uint8_t dic = int(floor(Battery));
+  uint8_t men = int((int(Battery)-dic)*10);
+  usart_putc(USART1,Battery);
+  //Serial1.print(men);
+  return Battery;
+}
+
 void pinInit()
 {
   pinMode(TX_LED,OUTPUT);
   pinMode(RX_LED,OUTPUT);
   pinMode(PC13,OUTPUT);
+  pinMode(batteryPin,INPUT_ANALOG);
 }
